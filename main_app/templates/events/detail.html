@@ -12,12 +12,50 @@
                 <p>Description: {{ event.description }}</p>
                 <p>Rating: {{ event.rating }}</p>
             </div>
-            <!-- <div class = 'card-action'>
-                <a href=" url 'cats_update' cat.id ">Edit</a>
-                <a href=" url 'cats_delete' cat.id ">Delete</a>
-            </div> -->
+            <div class="card-action">
+                <a href="{% url 'events_update' event.id %}">Edit</a>
+                <a href="{% url 'events_delete' event.id %}">Delete</a>
+            </div>
         </div>
     </div>
+    <div class="col s6">
+
+        <form action="{% url 'add_schedule' event.id %}" method="POST">
+            {% csrf_token %}
+            {{ schedule_form.as_p }}
+            <input type='submit' class='btn' value='Schedule'>
+        </form>
+
+        <table class="striped">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Time of Day</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for s in event.schedule_set.all %}
+            <tr>
+                <td>{{s.date}}</td>
+                <td>{{s.get_timeofday_display}}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 <div>
+
+<script>
+    const dateEl = document.getElementById('id_date');
+    M.Datepicker.init(dateEl, {
+        format: 'yyyy-mm-dd',
+        defaultDate: new Date(),
+        setDefaultDate: true,
+        autoClose: true
+    });
+    
+    const selectEl = document.getElementById('id_timeofday');
+    M.FormSelect.init(selectEl);
+</script>
 
 {% endblock %}

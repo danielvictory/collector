@@ -1,10 +1,12 @@
 # Import base django dependencies
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
+from django.shortcuts import render, redirect
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, DetailView
 from django.http import HttpResponse
 
 # Import models
 from .models import Event
+from .forms import ScheduleForm
 
 # Define class view(s)
 # class CollectionList(ListView):
@@ -18,6 +20,13 @@ class EventCreate(CreateView):
 class EventDetail(DetailView):
     model = Event
 
+class EventUpdate(UpdateView):
+    model = Event
+    fields = '__all__'
+
+class EventDelete(DeleteView):
+    model = Event
+    success_url = "/events"
 
 # Define function view(s)
 def home(request):
@@ -36,8 +45,21 @@ def events_index(request):
 
 def events_detail(request, event_id):
     event = Event.objects.get(id=event_id)
+
+    schedule_form = ScheduleForm()
+     
     return render(
         request,
         'events/detail.html',
-        {'event':event,}
+        {'event':event,
+         'schedule_form': schedule_form
+        }
     )
+
+def add_schedule(request, event_id):
+    form = ScheduleForm(request.POST)
+    if form.is_valid():
+        new_schedule = form.save(commit=False)
+        new_schedule.event_id = event_id
+        new_schedule.save()
+    return redirect('detail', event_id = event_id)
