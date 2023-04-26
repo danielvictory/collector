@@ -5,7 +5,7 @@ from django.views.generic import ListView, DetailView
 from django.http import HttpResponse
 
 # Import models
-from .models import Event
+from .models import Event, Performer
 from .forms import ScheduleForm
 
 # Define class view(s)
@@ -47,12 +47,15 @@ def events_detail(request, event_id):
     event = Event.objects.get(id=event_id)
 
     schedule_form = ScheduleForm()
+
+    performers_not_listed = Performer.objects.exclude(id__in = event.performers.all().values_list('id'))
      
     return render(
         request,
         'events/detail.html',
         {'event':event,
-         'schedule_form': schedule_form
+         'schedule_form': schedule_form,
+         'performers': performers_not_listed,
         }
     )
 

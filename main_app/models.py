@@ -18,12 +18,18 @@ class Item(models.Model):
 
     def __str__(self):
         return f"{self.name} is a {self.classifier}."
+
+class Performer(models.Model):
+    name = models.CharField(max_length = 150)
+    profession = models.CharField(max_length = 150)
     
 class Event(models.Model):
     name = models.CharField(max_length = 150)
     type = models.CharField(max_length = 150)
     description = models.TextField(max_length = 300)
     rating = models.IntegerField()
+
+    performers = models.ManyToManyField(Performer)
 
     def __str__(self):
         return f"{self.name} is a {self.type} event."
