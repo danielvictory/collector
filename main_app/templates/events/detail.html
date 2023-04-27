@@ -71,9 +71,15 @@
             {% for p in performers.all %}
                 <div class="card">
                     <div class="card-content">
-                        <span class="card title">
+                        <span class="card-title">
                             Performer: {{ p.name }} ({{ p.profession }})
                         </span>
+                    </div>
+                    <div class='card-action'>
+                        <form action="{% url 'assoc_performer' event.id p.id %}" method="post">
+                            {% csrf_token %}
+                            <button type='submit' class='btn'>Add</button>
+                        </form>
                     </div>
                 </div>
             {% endfor %}

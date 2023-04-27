@@ -28,6 +28,24 @@ class EventDelete(DeleteView):
     model = Event
     success_url = "/events"
 
+class PerformersIndex(ListView):
+    model = Performer
+
+class PerformersDetail(DetailView):
+    model = Performer
+
+class PerformerCreate(CreateView):
+    model = Performer
+    fields = '__all__'
+
+class PerformerUpdate(UpdateView):
+    model = Performer
+    fields = '__all__'
+
+class PerformerDelete(DeleteView):
+    model = Performer
+    success_url = '/performers'
+
 # Define function view(s)
 def home(request):
     return HttpResponse('<h1>Hello /ᐠ｡‸｡ᐟ\ﾉ</h1><a href="events/">Index</a>')
@@ -66,3 +84,7 @@ def add_schedule(request, event_id):
         new_schedule.event_id = event_id
         new_schedule.save()
     return redirect('detail', event_id = event_id)
+
+def assoc_performer(request, event_id, performer_id):
+    Event.objects.get(id=event_id).performers.add(performer_id)
+    return redirect('detail', event_id=event_id)

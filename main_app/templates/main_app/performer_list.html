@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Performer List</h1>
+
+{% for p in object_list %}
+    <div class="card">
+    <a href="{% url 'performer_detail' p.id %}" >
+    <div class="card-content">
+        <span class="card-title">{{ p.name }} ({{ p.profession }})</span>
+    </div>
+    </a>
+    </div>
+{% endfor %}
+
+{% endblock %}

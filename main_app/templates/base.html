@@ -26,8 +26,15 @@
           </ul>
           <ul class="right">
             <li><a href="{% url 'about' %}">About</a></li>
-            <li><a href="{% url 'events_create' %}">Add an Event</a></li>
-            <li><a href="{% url 'index' %}">View Event Collection</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'performers_create' %}">Add Performer</a></li>
+            <li><a href="{% url 'performers_index' %}">View Performers</a></li>
+            <li><a href="{% url 'events_create' %}">Add Event</a></li>
+            <li><a href="{% url 'index' %}">View Events</a></li>
+            <li><a href="{% url 'logout' %}">Log Out</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Log In</a></li>
+            {% endif %}
           </ul>
         </div>
       </nav>
