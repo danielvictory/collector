@@ -22,5 +22,5 @@ urlpatterns = [
 
     path('events/<int:event_id>/assoc_performer/<int:performer_id>', views.assoc_performer, name='assoc_performer'),
 
-    
+    path('accounts/signup', views.signup, name='signup'),
 ]
